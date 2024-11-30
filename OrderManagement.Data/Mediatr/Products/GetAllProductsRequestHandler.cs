@@ -40,6 +40,8 @@ namespace OrderManagement.Data.Mediatr.Products
                     Stock = reader.GetInt32(4),
                     CategoryId = reader.GetInt32(5),
                     CategoryName = reader.IsDBNull(6) ? null : reader.GetString(6),
+                    SupplierId = reader.GetInt32(7),
+                    SupplierName = reader.IsDBNull(8) ? null : reader.GetString(8),
                 });
             }
 

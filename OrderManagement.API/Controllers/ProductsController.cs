@@ -54,7 +54,7 @@ namespace OrderManagement.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<int>> UpdateProduct(int id, [FromBody] UpdateProductRequest request)
         {
-            request.Id = id;  // Присваиваем ID из URL
+            request.Id = id; 
             var rowsAffected = await _mediator.Send(request);
             if (rowsAffected == 0)
             {

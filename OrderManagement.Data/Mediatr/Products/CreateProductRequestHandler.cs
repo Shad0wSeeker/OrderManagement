@@ -30,7 +30,7 @@ namespace OrderManagement.Data.Mediatr.Products
             command.Parameters.AddWithValue("@Price", request.Price);
             command.Parameters.AddWithValue("@Stock", request.Stock);
             command.Parameters.AddWithValue("@CategoryId", request.CategoryId);
-
+            command.Parameters.AddWithValue("@SupplierId", request.SupplierId);
 
             var result = await command.ExecuteNonQueryAsync(cancellationToken);
 

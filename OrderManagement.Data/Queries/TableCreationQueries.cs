@@ -48,7 +48,8 @@ namespace OrderManagement.Data.Queries
             Price REAL NOT NULL,
             Stock INTEGER NOT NULL,
             CategoryId INTEGER NOT NULL, -- Связь с Categories
-            FOREIGN KEY (CategoryId) REFERENCES Categories(Id) ON DELETE CASCADE
+            FOREIGN KEY (CategoryId) REFERENCES Categories(Id) ON DELETE CASCADE,
+            FOREIGN KEY (SupplierId) REFERENCES Suppliers(Id) ON DELETE SET NULL
         );";
 
         public static readonly string CreateCategoryTable = @"

@@ -12,13 +12,14 @@
 }
 else
 {
-    <div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
         <h4>@product.Name</h4>
         <img src="@($"/Images/{product.Name}.jpg")" alt="@product.Name" style="max-width: 30%; height: auto;" />
         <p>@product.Description</p>
-        <p>@product.Price ₽</p>
+        <p>Цена: <b>@product.Price ₽</b></p>
+        <p>Поставщик: <b>@(product.SupplierId > 0 ? $"Поставщик #{product.SupplierId}" : "Не указан")</b></p>
 
-        <button @onclick="CreateOrder">Купить</button>
+        @* <button @onclick="CreateOrder" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Купить</button> *@
     </div>
 }
 
@@ -42,27 +43,5 @@ else
         }
     }
 
-    private async Task CreateOrder()
-    {
-        var orderRequest = new CreateOrderRequest
-            {
-                UserId = 1, // Или возьмите из контекста
-                OrderStatus = "Pending",
-                TotalAmount = product.Price,
-                CreatedAt = DateTime.Now
-            };
-
-        var response = await Http.PostAsJsonAsync("https://localhost:7113/api/order", orderRequest);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var orderId = await response.Content.ReadFromJsonAsync<int>();
-            NavigationManager.NavigateTo($"/order/{orderId}"); // Перенаправление на страницу с заказом
-        }
-        else
-        {
-            // Обработать ошибку
-            Console.WriteLine("Ошибка при создании заказа.");
-        }
-    }
+   
 }

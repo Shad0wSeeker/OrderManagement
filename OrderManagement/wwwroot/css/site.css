@@ -1,0 +1,183 @@
+/* Основной стиль для сайта */
+body {
+    background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Мягкий градиент */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Современный шрифт */
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40;
+    padding: 15px 30px;
+    color: white;
+}
+
+    header h1 {
+        cursor: pointer;
+        font-size: 24px;
+        margin: 0;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+    }
+
+        header h1:hover {
+            color: #ff5722; /* Оранжевый при наведении */
+        }
+
+    header div a {
+        color: white;
+        margin-left: 20px;
+        font-size: 16px;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        header div a:hover {
+            color: #ff5722; /* Оранжевый при наведении */
+        }
+
+/* Основной контейнер */
+.main-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Стиль для карточек категорий */
+.category-card {
+    display: inline-block;
+    width: 30%;
+    margin: 15px 1%;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .category-card img {
+        width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .category-card .category-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 15px;
+        text-align: center;
+        color: #333;
+    }
+
+/* Стиль для кнопки "Перейти к категориям" */
+.hero-button {
+    display: inline-block;
+    background-color: #ff5722;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
+    margin: 20px 0;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .hero-button:hover {
+        background-color: #e64a19;
+        transform: translateY(-3px);
+    }
+
+/* Стиль для страницы товара */
+.product-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+    .product-page img {
+        width: 80%;
+        max-width: 400px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .product-page h2 {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 15px 0;
+        color: #333;
+    }
+
+    .product-page .product-description {
+        font-size: 16px;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .product-page .price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #ff5722;
+        margin-top: 10px;
+    }
+
+/* Стили для страницы категорий */
+.categories-page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category-card {
+    display: inline-block;
+    width: 300px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .category-card h3 {
+        padding: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        color: #333;
+    }
+
+    .category-card ul {
+        padding: 0;
+        list-style-type: none;
+    }
+
+        .category-card ul li {
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 16px;
+            color: #555;
+        }
+
+            .category-card ul li:hover {
+                background-color: #f8f9fa;
+                cursor: pointer;
+            }

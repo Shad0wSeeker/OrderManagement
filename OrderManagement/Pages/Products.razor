@@ -1,0 +1,68 @@
+﻿@page "/product/{ProductId}"
+@using OrderManagement.Data.Entities
+@using OrderManagement.Data.Mediatr.Order
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Товар</h3>
+
+@if (product == null)
+{
+    <p>Загрузка...</p>
+}
+else
+{
+    <div>
+        <h4>@product.Name</h4>
+        <img src="@($"/Images/{product.Name}.jpg")" alt="@product.Name" style="max-width: 30%; height: auto;" />
+        <p>@product.Description</p>
+        <p>@product.Price ₽</p>
+
+        <button @onclick="CreateOrder">Купить</button>
+    </div>
+}
+
+@code {
+    [Parameter] public int ProductId { get; set; }
+    private Product product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            product = await Http.GetFromJsonAsync<Product>($"https://localhost:7113/api/Product/{ProductId}");
+            if (product == null)
+            {
+                Console.WriteLine("Продукт не найден.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка при получении данных о продукте: {ex.Message}");
+        }
+    }
+
+    private async Task CreateOrder()
+    {
+        var orderRequest = new CreateOrderRequest
+            {
+                UserId = 1, // Или возьмите из контекста
+                OrderStatus = "Pending",
+                TotalAmount = product.Price,
+                CreatedAt = DateTime.Now
+            };
+
+        var response = await Http.PostAsJsonAsync("https://localhost:7113/api/order", orderRequest);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var orderId = await response.Content.ReadFromJsonAsync<int>();
+            NavigationManager.NavigateTo($"/order/{orderId}"); // Перенаправление на страницу с заказом
+        }
+        else
+        {
+            // Обработать ошибку
+            Console.WriteLine("Ошибка при создании заказа.");
+        }
+    }
+}

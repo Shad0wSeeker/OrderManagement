@@ -1,0 +1,38 @@
+﻿using MediatR;
+using OrderManagement.Data.Queries;
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OrderManagement.Data.Mediatr.Category
+{
+    public class CreateCategoryRequestHandler : IRequestHandler<CreateCategoryRequest, int>
+    {
+        private readonly SQLiteConnection _connection;
+
+        public CreateCategoryRequestHandler(SQLiteConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public async Task<int> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
+        {
+            await _connection.OpenAsync(cancellationToken);
+
+            var query = CategoryQueries.CreateCategory;
+
+            using var command = new SQLiteCommand(query, _connection);
+            command.Parameters.AddWithValue("@Name", request.Name);
+            command.Parameters.AddWithValue("@ParentCategoryId", request.ParentCategoryId);
+
+            var result = await command.ExecuteNonQueryAsync(cancellationToken);
+
+            await _connection.CloseAsync();
+
+            return result;
+        }
+    }
+}

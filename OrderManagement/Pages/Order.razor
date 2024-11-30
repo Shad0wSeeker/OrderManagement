@@ -1,0 +1,31 @@
+﻿@page "/order/{OrderId}"
+@using OrderManagement.Data.Entities
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Детали заказа</h3>
+
+@if (order == null)
+{
+    <p>Загрузка...</p>
+}
+else
+{
+    <div>
+        <h4>Заказ № @order.Id</h4>
+        <p>Статус: @order.OrderStatus</p>
+        <p>Дата создания: @order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+        <p>Общая сумма: @order.TotalAmount $</p>
+    </div>
+}
+
+@code {
+    [Parameter] public int OrderId { get; set; }
+    private OrderManagement.Data.Entities.Order order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Получение заказа по ID
+        order = await Http.GetFromJsonAsync<OrderManagement.Data.Entities.Order>($"https://localhost:7113/api/order/{OrderId}");
+    }
+}

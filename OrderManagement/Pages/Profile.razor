@@ -1,0 +1,28 @@
+﻿@page "/profile"
+@using OrderManagement.Services
+
+@inject AuthService AuthService
+
+@if (isAuthenticated)
+{
+    <h3>Welcome, @username</h3>
+    <!-- Дополнительная информация о профиле -->
+}
+else
+{
+    <h3>Please log in to see your profile</h3>
+}
+
+@code {
+    private bool isAuthenticated;
+    private string username;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsAuthenticated();
+        if (isAuthenticated)
+        {
+            username = await AuthService.Username();
+        }
+    }
+}

@@ -1,0 +1,78 @@
+﻿@using OrderManagement.Services
+@inherits LayoutComponentBase
+
+<header>
+    <h1 @onclick="NavigateToHome">Мой магазин</h1>
+    <div>
+        <a href="/categories">Категории</a>
+        @if (isAuthenticated)
+        {
+            <span @onclick="NavigateToProfile" class="user-name">
+                Привет, @username
+            </span>
+            <button @onclick="Logout" class="logout-button">Выход</button>
+        }
+        else
+        {
+            <a href="/login">Войти</a>
+            <a href="/register">Регистрация</a>
+        }
+    </div>
+</header>
+
+<div class="main-container">
+    @Body
+</div>
+
+@code {
+    // Инжектируем необходимые сервисы
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+    [Inject]
+    private AuthService AuthService { get; set; }
+
+    private bool isAuthenticated;
+    private string username;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateAuthenticationState();
+    }
+
+    private async Task UpdateAuthenticationState()
+    {
+        // Проверка, авторизован ли пользователь
+        isAuthenticated = await AuthService.IsAuthenticated();
+        if (isAuthenticated)
+        {
+            // Получаем имя пользователя
+            username = await AuthService.Username();
+        }
+
+        // Запрос на обновление состояния компонента
+        StateHasChanged();
+    }
+
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void NavigateToProfile()
+    {
+        // Перенаправление на страницу профиля
+        NavigationManager.NavigateTo("/profile");
+    }
+
+    private async Task Logout()
+    {
+        // Очищаем токен (выход из аккаунта)
+        await AuthService.Logout();
+
+        // Обновляем состояние
+        await UpdateAuthenticationState();
+
+        // Перенаправление на страницу входа
+        NavigationManager.NavigateTo("/login");
+    }
+}

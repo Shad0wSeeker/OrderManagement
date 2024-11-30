@@ -1,0 +1,60 @@
+﻿@page "/categories"
+@using OrderManagement.Data.Entities
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>Категории товаров</h1>
+
+<div class="categories-page">
+    @if (categories == null)
+    {
+        <p>Загрузка категорий...</p>
+    }
+    else if (!categories.Any())
+    {
+        <p>Категории не найдены.</p>
+    }
+    else
+    {
+        @foreach (var category in categories)
+        {
+            <div class="category-card" @onclick="() => NavigateToCategory(category.Id)">
+                <h3>@category.Name</h3>
+                <ul>
+                    @foreach (var product in category.Products)
+                    {
+                        <li @onclick="() => NavigateToProduct(product.Id)">
+                            @product.Name
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<CategoryWithProducts> categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await Http.GetFromJsonAsync<List<CategoryWithProducts>>("https://localhost:7113/api/Category");
+    }
+
+    private void NavigateToCategory(int categoryId)
+    {
+        NavigationManager.NavigateTo($"/category/{categoryId}");
+    }
+
+    private void NavigateToProduct(int productId)
+    {
+        NavigationManager.NavigateTo($"/product/{productId}");
+    }
+
+    public class CategoryWithProducts
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<Product> Products { get; set; }
+    }
+}

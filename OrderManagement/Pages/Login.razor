@@ -1,0 +1,58 @@
+﻿@page "/login"
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Forms
+@using OrderManagement.Models
+@using OrderManagement.Services
+
+<h3>Login</h3>
+
+<EditForm Model="loginRequest" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="loginRequest.Username" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginRequest.Password" Type="password" />
+    </div>
+    <button type="submit">Login</button>
+</EditForm>
+
+@if (loginErrorMessage != null)
+{
+    <div class="alert alert-danger">@loginErrorMessage</div>
+}
+
+@if (loginSuccessMessage != null)
+{
+    <div class="alert alert-success">@loginSuccessMessage</div>
+}
+
+@code {
+    private LoginRequest loginRequest = new LoginRequest();
+    private string loginErrorMessage;
+    private string loginSuccessMessage;
+
+    private async Task HandleLogin()
+    {
+        var token = await AuthService.Login(loginRequest.Username, loginRequest.Password);
+
+        if (token != null)
+        {
+            loginSuccessMessage = "Login successful!";
+            loginErrorMessage = null;
+
+            // Перенаправление после успешного входа
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            loginErrorMessage = "Invalid login attempt.";
+            loginSuccessMessage = null;
+        }
+    }
+}
